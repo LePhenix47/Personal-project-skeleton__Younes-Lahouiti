@@ -1,12 +1,37 @@
 {
   "name": "skeleton-sass-ts-project",
   "version": "1.0.0",
-  "description": "- [Title](#title)\r   - [Table of Contents](#table-of-contents)\r   - [1. Description](#1-description)\r   - [2. Demo](#2-demo)\r   - [3. Technologies Used](#3-technologies-used)\r   - [4. Features](#4-features)\r   - [5. Usage](#5-usage)\r   - [6. Credits](#6-credits)\r   - [7. License](#7-license)",
-  "main": "webpack.config.js",
+  "description": "Small TS-SASS compiled with Webpack project skeleton",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack --watch"
   },
-  "keywords": [],
-  "author": "",
+  "keywords": [
+    "HTML",
+    "SASS",
+    "TypeScript",
+    "web application"
+  ],
+  "author": "Younes LAHOUITI",
+  "devDependencies": {
+    "autoprefixer": "^10.4.1",
+    "css-loader": "^6.5.2",
+    "mini-css-extract-plugin": "^2.4.5",
+    "node-sass": "^6.0.1",
+    "postcss": "^8.4.23",
+    "postcss-loader": "^6.2.1",
+    "css-minimizer-webpack-plugin": "^5.0.0",
+    "sass": "^1.62.0",
+    "sass-loader": "^12.4.0",
+    "style-loader": "^3.3.2",
+    "terser-webpack-plugin": "^5.3.7",
+    "ts-loader": "^9.4.2",
+    "typescript": "^5.0.4",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.1",
+    "webpack-dev-server": "^4.6.0"
+  },
+  "dependencies": {},
   "license": "ISC"
 }
