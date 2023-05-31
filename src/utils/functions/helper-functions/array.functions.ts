@@ -71,8 +71,9 @@ export function joinArrayOnChar(array: any[], char: string = ""): string {
  * toSpliced() for splice()
  * toReversed() for reverse()
  *
+ * So we won't need to make a copy of the array before performing the mutation
  *
  * Source:
  * "I Waited 15 Years For These New Array Methods" by Web Dev Simplified:
- * https://www.youtube.com/watch?v=3CBD5JZJJKw
+ * @link https://www.youtube.com/watch?v=3CBD5JZJJKw
  */

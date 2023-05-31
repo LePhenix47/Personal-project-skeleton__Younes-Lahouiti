@@ -2,8 +2,8 @@
  * Utility class that sets and clears intervals
  */
 export class IntervalService {
-  private static id: number;
-  private static arrayOfIds: number[] = [];
+  private static id: NodeJS.Timer;
+  private static arrayOfIds: NodeJS.Timer[] = [];
 
   /**
    * Method that creates an interval
@@ -26,7 +26,7 @@ export class IntervalService {
     milliseconds: number,
     callback: (...functionArguments: any) => any,
     ...functionArguments: any[]
-  ): number {
+  ): NodeJS.Timer {
     this.id = setInterval(() => {
       callback(...functionArguments);
     }, milliseconds);
@@ -54,14 +54,16 @@ export class IntervalService {
    * Interval.clear(intervalTrigger);
    *
    */
-  static clear(id: number): void {
-    const actualId: number = this.arrayOfIds.find((idNumber: number) => {
-      return idNumber === id;
-    });
+  static clear(id: NodeJS.Timer): void {
+    const actualId: NodeJS.Timer = this.arrayOfIds.find(
+      (idNumber: NodeJS.Timer) => {
+        return idNumber === id;
+      }
+    );
 
     clearInterval(actualId);
 
-    this.arrayOfIds = this.arrayOfIds.filter((idNumber: number) => {
+    this.arrayOfIds = this.arrayOfIds.filter((idNumber: NodeJS.Timer) => {
       return idNumber !== actualId;
     });
   }
