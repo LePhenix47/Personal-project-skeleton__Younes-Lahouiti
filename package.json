@@ -1,0 +1,12 @@
+{
+  "name": "skeleton-sass-ts-project",
+  "version": "1.0.0",
+  "description": "- [Title](#title)\r   - [Table of Contents](#table-of-contents)\r   - [1. Description](#1-description)\r   - [2. Demo](#2-demo)\r   - [3. Technologies Used](#3-technologies-used)\r   - [4. Features](#4-features)\r   - [5. Usage](#5-usage)\r   - [6. Credits](#6-credits)\r   - [7. License](#7-license)",
+  "main": "webpack.config.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
