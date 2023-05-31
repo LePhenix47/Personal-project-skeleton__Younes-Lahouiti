@@ -1,0 +1,1 @@
+(()=>{"use strict";(()=>{const{log:e,error:o,table:r,time:t,timeEnd:l,timeStamp:i,timeLog:n,assert:s,clear:a,count:c,countReset:d,group:u,groupCollapsed:g,groupEnd:m,trace:p,warn:b,debug:w,info:E,dir:f,dirxml:x}=console;e("Hello world!")})()})();
