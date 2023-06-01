@@ -1,3 +1,5 @@
+import { parseToJS } from "../../functions/helper-functions/string.functions";
+
 /**
  * Utility class that handles cookies
  *
@@ -20,8 +22,14 @@ export class CookieService {
    * @param {any} value Value of the cookie
    * @param {boolean} cookieCanExpire Boolean to know if the cookie can expire
    * @returns {string} Cookie-string that was created
+   *
+   * @static
    */
-  setCookie(name: any, value: any, cookieCanExpire: boolean = false): string {
+  static setCookie(
+    name: any,
+    value: any,
+    cookieCanExpire: boolean = false
+  ): string {
     if (cookieCanExpire) {
       //Gets the time in ms from the next week
       let todayInMilliseconds: number = new Date().getTime();
@@ -31,7 +39,7 @@ export class CookieService {
       let nextWeekDate: Date = new Date(
         todayInMilliseconds + sevenDaysInMilliseconds
       );
-      document.cookie = `${name}=${value}; expires="${nextWeekDate}"; sameSite=strict"`;
+      return (document.cookie = `${name}=${value}; expires="${nextWeekDate}"; sameSite=strict"`);
     }
 
     return (document.cookie = `${name}=${value}; sameSite=strict`);
@@ -42,8 +50,9 @@ export class CookieService {
    *
    * @param {string} cookieNameToFind Name of the cookie
    * @returns {null | { name:string, value:any }} Null or an object with the the name and the value of cookie
+   * @static
    */
-  getCookieByName(
+  static getCookieByName(
     cookieNameToFind: string
   ): null | { name: string; value: any } {
     //We get all the cookies
@@ -72,8 +81,9 @@ export class CookieService {
    * @param {string} nameOfCookie Name of the cookie
    * @param {any} newValue New value for the cookie
    * @returns {void}
+   * @static
    */
-  patchCookieValue(nameOfCookie: string, newValue: any): void {
+  static patchCookieValue(nameOfCookie: string, newValue: any): void {
     document.cookie = `${nameOfCookie}=${newValue}`;
   }
 
@@ -82,8 +92,9 @@ export class CookieService {
    *
    * @param {string} nameOfCookie Name of the cookie to delete
    * @returns {void}
+   * @static
    */
-  deleteCookieByName(nameOfCookie: string): void {
+  static deleteCookieByName(nameOfCookie: string): void {
     document.cookie = `${nameOfCookie}=0; expires=${new Date(0)}`;
   }
 
@@ -93,8 +104,9 @@ export class CookieService {
    *
    * @param {boolean} rawCookies Boolean to know if the cookies retrieved need to be in a string
    * @returns {string | {name:string, value:any}} Either a string or an array of objects containing the cookies
+   * @static
    */
-  getAllCookies(
+  static getAllCookies(
     rawCookies: boolean = false
   ): string | { name: string; value: any }[] {
     if (rawCookies) {
@@ -107,6 +119,7 @@ export class CookieService {
     for (const cookie of rawArrayOfCookies) {
       let name: string = cookie.split("=")[0];
       let value: any = cookie.split("=")[1];
+      value = parseToJS(value);
 
       formattedArrayOfCookies.push({ name, value });
     }
@@ -118,8 +131,9 @@ export class CookieService {
    * Deletes all cookies stored in the website
    *
    * @returns {void}
+   * @static
    */
-  deleteAllCookies(): void {
+  static deleteAllCookies(): void {
     let rawArrayOfCookies: string[] = document.cookie.split(";");
 
     for (const cookie of rawArrayOfCookies) {
