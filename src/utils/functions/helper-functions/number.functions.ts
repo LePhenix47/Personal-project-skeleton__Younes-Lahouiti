@@ -51,7 +51,7 @@ export function getRandomNumber(
  * @param {number} [root=2] - The degree of the root.
  *
  * @returns {number} The nth root of the value.
- * @throws {Error} If the root of the value is invalid.
+ * @throws {Error} If the root is null or if the root of the value is invalid.
  */
 export function nthRoot(value: number, root: number = 2): number {
   const rootIsInvalid: boolean = root === 0;
