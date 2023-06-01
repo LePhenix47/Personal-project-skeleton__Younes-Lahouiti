@@ -48,22 +48,35 @@ export function getRandomNumber(
  * By default acts as a square root `√(x)`
  *
  * @param {number} value - The value for which to calculate the nth root.
- * @param {number} [base=2] - The degree of the root.
+ * @param {number} [root=2] - The degree of the root.
  *
- *  @returns {number} The nth root of the value.
+ * @returns {number} The nth root of the value.
+ * @throws {Error} If the root of the value is invalid.
  */
-export function nthRoot(value: number, base: number = 2): number {
-  //We check that the value is negative AND  that the base is pair
-  const valueOfRootIsInvalid: boolean = value < 0 && base % 2 === 0;
-  if (valueOfRootIsInvalid) {
-    // Negative values cannot have an even root
-    //∛(-27) = 3 but √(-16) = undefined
-    error("The root of the value passed is invalid");
-    return NaN;
+export function nthRoot(value: number, root: number = 2): number {
+  const rootIsInvalid: boolean = root === 0;
+  if (rootIsInvalid) {
+    throw new Error(
+      `The root cannot be null, it must strictly be either negative or positive`
+    );
   }
 
-  //ⁿ√(x) = x^(1/n)
-  return value ** (1 / base);
+  // We check that the value is negative AND that the root is even
+  const valueOfRootIsInvalid = value < 0 && root % 2 === 0;
+  if (valueOfRootIsInvalid) {
+    // Negative values cannot have an even root
+    //∛(-27) = -3 but √(-16) = undefined
+    throw new Error(
+      `The root: ${root} of the value: ${value} passed is invalid, cannot have a negative value with an even root`
+    );
+  }
+
+  let absValue: number = Math.abs(value);
+
+  // ⁿ√(x) = x^(1/n)
+  let calculatedRoot = absValue ** (1 / root);
+
+  return value > 0 ? calculatedRoot : -1 * calculatedRoot;
 }
 
 /**
