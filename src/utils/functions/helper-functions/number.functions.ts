@@ -71,11 +71,14 @@ export function nthRoot(value: number, root: number = 2): number {
     );
   }
 
+  //To avoid JS returning us a NaN even with odd roots of negative values
+  //We set the value to be positive
   let absValue: number = Math.abs(value);
 
-  // ⁿ√(x) = x^(1/n)
-  let calculatedRoot = absValue ** (1 / root);
+  //Then we use the formula ⁿ√(x) = x^(1/n)
+  let calculatedRoot: number = absValue ** (1 / root);
 
+  //And we now return the nth root of a positive or negative value
   return value > 0 ? calculatedRoot : -1 * calculatedRoot;
 }
 
