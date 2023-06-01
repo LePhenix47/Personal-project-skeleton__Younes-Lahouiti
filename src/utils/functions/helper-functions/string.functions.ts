@@ -149,10 +149,14 @@ Ex: We have "Saturday" and we want to just end up with "at"
 
 ```js
 let str = "Saturday"
-str = sliceString(str, 1, 3); //at
+str = sliceString(str, 1, 3); //"at"
 
 let str2 = "#FFFFFF"
-str2 = sliceSting(str2, 1); //FFFFFF
+str2 = sliceSting(str2, 1); //"FFFFFF"
+
+
+let str3 = "Hello world"
+str3 = sliceString(str3, -5) //"world"
 ```
 
 @param {string} string - The input string to slice.
