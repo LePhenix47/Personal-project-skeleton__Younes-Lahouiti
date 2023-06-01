@@ -62,7 +62,7 @@ export function nthRoot(value: number, root: number = 2): number {
   }
 
   // We check that the value is negative AND that the root is even
-  const valueOfRootIsInvalid = value < 0 && root % 2 === 0;
+  const valueOfRootIsInvalid: boolean = value < 0 && root % 2 === 0;
   if (valueOfRootIsInvalid) {
     // Negative values cannot have an even root
     //∛(-27) = -3 but √(-16) = undefined
