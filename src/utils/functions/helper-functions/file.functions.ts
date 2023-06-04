@@ -56,7 +56,9 @@ export function fileToBase64String(fileToConvert: File): Promise<string> {
 
 /**
  * Converts a File object to a Blob URL.
+ *
  * @param {File} fileToConvert - The File object to convert to a Blob URL.
+ *
  * @returns {string} The Blob URL representing the File object.
  */
 export function fileToBlobUrl(fileToConvert: File): string {
