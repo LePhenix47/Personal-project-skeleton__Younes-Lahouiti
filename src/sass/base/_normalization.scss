@@ -26,9 +26,9 @@
 *::selection {
     -webkit-text-stroke: transparent;
 
-    color: var(--selection-color);
+    color: var(--_selection-color);
 
-    background-color: var(--selection-bg-color);
+    background-color: var(--_selection-bg-color);
 }
 
 html {
@@ -51,12 +51,13 @@ body {
     overflow-x: hidden;
 
     transition:
-        background-color 650ms ease-in-out,
+        background-color 450ms ease-in-out,
         color 350ms ease-in-out;
 
 }
 
-:is(ul, ol) {
+ul,
+ol {
     list-style-type: none;
 }
 
@@ -298,12 +299,17 @@ input {
         }
 
         background-color: transparent;
+        border: transparent;
+        outline: 2px solid currentColor;
+
+        padding: 0px;
+
         --_color-swatch-display: inline-block;
 
         --_color-swatch-height: 100%;
 
-        --_color-swatch-border-width: 1px;
-        --_color-swatch-border-color: currentColor;
+        --_color-swatch-border-width: 0px;
+        --_color-swatch-border-color: transparent;
 
         &::-moz-color-swatch {
             display: var(--_color-swatch-display);
@@ -377,11 +383,14 @@ input {
         --_track-width: 160px;
         --_track-height: 20px;
 
-        --_track-bg: #e9e9ed;
-
         --_track-appearance: none;
 
+        --_track-bg: #e9e9ed;
+        --_track-bg-image: none;
+
         background-color: var(--_track-bg);
+        background-image: var(--_track-bg-image);
+
         appearance: var(--_track-appearance);
         overflow: hidden;
 
@@ -405,7 +414,7 @@ input {
         --_thumb-bg: #484851;
 
         --_thumb-border-color: white;
-        --_thumb-border-width: 0px;
+        --_thumb-border-width: 2px;
         --_thumb-border-radius: 100vmax;
 
         --_thumb-width: 15px;
