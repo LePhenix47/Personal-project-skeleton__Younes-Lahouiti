@@ -96,19 +96,17 @@ export function logarithm(value: number, base: number = Math.E): number {
   //since log(1) = 0 and logₙ(x) = log(x)/log(n), a base of 1 would give a division by 0
   const baseIsInvalid: boolean = base <= 0 || base === 1;
   if (baseIsInvalid) {
-    warn(
+    throw new Error(
       `The base of the logarithm ${
         base <= 0 ? "is negative or null" : "returns a division by 0"
       }`
     );
-    return NaN;
   }
 
   //Logarithmic functions cannot have a negative or null value
   const valueIsInvalid: boolean = value <= 0;
   if (valueIsInvalid) {
-    error("The value passed is negative or null");
-    return NaN;
+    throw new Error("The value passed is negative or null");
   }
 
   return Math.log(value) / Math.log(base);

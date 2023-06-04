@@ -21,7 +21,6 @@ export const {
   fround,
   hypot,
   imul,
-  log,
   log1p,
   log10,
   log2,
