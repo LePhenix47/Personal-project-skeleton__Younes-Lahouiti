@@ -14,6 +14,8 @@
 
 ## 1. Description
 
+[DESCRIPTION]
+
 ## 2. Demo
 
 You can see a live demo of the project at: [GitHub Pages]()
@@ -34,15 +36,7 @@ You can see a live demo of the project at: [GitHub Pages]()
 
 ## 5. Usage
 
-To use the Paintbrush App, follow these steps:
-
-1. Clone the repository or download the source code.
-2. Open the `index.html` file in a web browser.
-3. Use the mouse to freely draw on the canvas.
-4. Customize the brush size and color using the provided options.
-5. Use the undo button to remove the last stroke or the clear button to start a new canvas.
-
-Feel free to explore and unleash your creativity with the Paintbrush App!
+[USAGE]
 
 ## 6. Credits
 
