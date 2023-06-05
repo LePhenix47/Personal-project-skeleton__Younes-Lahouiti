@@ -311,12 +311,18 @@ input {
         --_color-swatch-border-width: 0px;
         --_color-swatch-border-color: transparent;
 
+        --_color-swatch-border-radius: 0px;
+        border-radius: var(--_color-swatch-border-radius);
+
+
         &::-moz-color-swatch {
             display: var(--_color-swatch-display);
 
             height: var(--_color-swatch-height);
 
             border: var(--_color-swatch-border-width) solid var(--_color-swatch-border-color);
+
+            border-radius: var(--_color-swatch-border-radius);
         }
 
         &::-webkit-color-swatch {
@@ -325,6 +331,8 @@ input {
             height: var(--_color-swatch-height);
 
             border: var(--_color-swatch-border-width) solid var(--_color-swatch-border-color);
+
+            border-radius: var(--_color-swatch-border-radius);
         }
     }
 
