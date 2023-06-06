@@ -421,12 +421,16 @@ export function transformColorModel(
   //Indirect conversions
   const HSL_TO_RGB: boolean =
     initialColorModel.includes("hsl") && wantedColorModel.includes("rgb");
+
   const RGB_TO_HEX: boolean =
     initialColorModel.includes("rgb") && wantedColorModel.includes("hex");
+
   const HEX_TO_HSL: boolean =
     initialColorModel.includes("hex") && wantedColorModel.includes("hsl");
+
   const HWB_TO_RGB: boolean =
     initialColorModel.includes("hwb") && wantedColorModel.includes("rgb");
+
   const HWB_TO_HSL: boolean =
     initialColorModel.includes("hwb") && wantedColorModel.includes("hsl");
 
