@@ -58,7 +58,7 @@ export function nthRoot(value: number, root: number = 2): number {
   const rootIsInvalid: boolean = root === 0;
   if (rootIsInvalid) {
     throw new Error(
-      `The root cannot be null, it must strictly be either negative or positive`
+      `The root cannot be null, as it returns an exponent with a division by 0`
     );
   }
 
