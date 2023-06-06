@@ -1,7 +1,5 @@
 import { log } from "./utils/functions/helper-functions/console.functions";
 
-import { getAllColorModelsFromHex } from "./utils/functions/helper-functions/color-conversion.functions";
-
 //Web components
 import "./components/web-component.component";
 import { ColorConverter } from "./utils/classes/services/color-converter-service.class";

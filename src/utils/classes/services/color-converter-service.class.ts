@@ -340,11 +340,6 @@ export class ColorConverter extends ColorsConverterMethods {
   }
 
   normalizeToRgb() {
-    const isAlreadyRgb = this.currentModel === "rgb";
-    if (isAlreadyRgb) {
-      return;
-    }
-
     switch (this.currentModel) {
       case "hex": {
         this.normalizedColor = this.fromHexToRgb(this.color as string);
