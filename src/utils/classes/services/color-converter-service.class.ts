@@ -14,27 +14,8 @@ import {
 } from "../../variables/color-types.variables";
 
 export class ColorsConverterMethods {
-  color:
-    | string
-    | RedGreenBlue
-    | HueSaturationLightness
-    | HueWhitenessBlackness
-    | HueSaturationValue;
-
-  constructor(
-    newColor:
-      | string
-      | RedGreenBlue
-      | HueSaturationLightness
-      | HueWhitenessBlackness
-      | HueSaturationValue
-  ) {
-    this.color = newColor;
-  }
-
-  fromRgbToHex(): string {
-    this.color = this.color as RedGreenBlue;
-    const { red, green, blue } = this.color;
+  fromRgbToHex(color: RedGreenBlue): string {
+    const { red, green, blue } = color;
 
     const hexadecimalRed: string = decimalToHexadecimal(red);
     const hexadecimalGreen: string = decimalToHexadecimal(green);
@@ -43,22 +24,20 @@ export class ColorsConverterMethods {
     return `#${hexadecimalRed}${hexadecimalGreen}${hexadecimalBlue};`;
   }
 
-  fromHexToRgb(): RedGreenBlue {
-    this.color = this.color as string;
-
+  fromHexToRgb(color: string): RedGreenBlue {
     const colorArgumentIsInvalid: boolean =
-      this.color?.length < 6 || this.color?.length > 7;
+      color?.length < 6 || color?.length > 7;
     if (colorArgumentIsInvalid) {
       console.error(
-        `Error: Unexpected color argument length passed, was expecting a 6 or 7 characters long string but instead got ${this.color.length}`
+        `Error: Unexpected color argument length passed, was expecting a 6 or 7 characters long string but instead got ${color.length}`
       );
     }
 
-    let hexColor: string = this.color;
+    let hexColor: string = color;
 
-    const hasHashTag: boolean = this.color.charAt(0) === "#";
+    const hasHashTag: boolean = color.charAt(0) === "#";
     if (hasHashTag) {
-      hexColor = sliceString(this.color, 1);
+      hexColor = sliceString(color, 1);
     }
 
     let redBase16: string = getSubtring(hexColor, 0, 2);
@@ -68,8 +47,8 @@ export class ColorsConverterMethods {
     let base16NumbersArray: any[] = [redBase16, greeBase16, blueBase16];
 
     for (let i = 0; i < base16NumbersArray.length; i++) {
-      let color: string = base16NumbersArray[i];
-      base16NumbersArray[i] = hexadecimalToDecimal(color);
+      let colorBase16: string = base16NumbersArray[i];
+      base16NumbersArray[i] = hexadecimalToDecimal(colorBase16);
     }
 
     const redBase10: number = Number(base16NumbersArray[0]);
@@ -79,9 +58,8 @@ export class ColorsConverterMethods {
     return { red: redBase10, green: greenBase10, blue: blueBase10 };
   }
 
-  fromRgbToHsl(): HueSaturationLightness {
-    this.color = this.color as RedGreenBlue;
-    const { red, green, blue } = this.color;
+  fromRgbToHsl(color: RedGreenBlue): HueSaturationLightness {
+    const { red, green, blue } = color;
 
     const argumentsAreInvalid: boolean =
       !Number.isInteger(red) ||
@@ -166,9 +144,8 @@ export class ColorsConverterMethods {
     };
   }
 
-  fromHslToRgb(): RedGreenBlue {
-    this.color = this.color as HueSaturationLightness;
-    const { hue, saturation, lightness } = this.color;
+  fromHslToRgb(color: HueSaturationLightness): RedGreenBlue {
+    const { hue, saturation, lightness } = color;
 
     const normalizedSaturation: number = saturation / 100;
     const normalizedLightness: number = lightness / 100;
@@ -192,15 +169,14 @@ export class ColorsConverterMethods {
     };
   }
 
-  fromRgbToHwb(): HueWhitenessBlackness {
-    this.color = this.color as RedGreenBlue;
-    const { red, green, blue } = this.color;
+  fromRgbToHwb(color: RedGreenBlue): HueWhitenessBlackness {
+    const { red, green, blue } = color;
 
     const normalizedRed: number = red / 255;
     const normalizedGreen: number = green / 255;
     const normalizedBlue: number = blue / 255;
 
-    const { hue } = this.fromRgbToHsl();
+    const { hue } = this.fromRgbToHsl(color);
 
     const whiteness: number = Math.min(
       normalizedRed,
@@ -217,9 +193,8 @@ export class ColorsConverterMethods {
     };
   }
 
-  fromHwbToRgb(): RedGreenBlue {
-    this.color = this.color as HueWhitenessBlackness;
-    const { hue, whiteness, blackness } = this.color;
+  fromHwbToRgb(color: HueWhitenessBlackness): RedGreenBlue {
+    const { hue, whiteness, blackness } = color;
 
     const normalizedWhiteness: number = whiteness / 100;
     const normalizedBlackness: number = blackness / 100;
@@ -235,7 +210,11 @@ export class ColorsConverterMethods {
         blue: Math.round(greyColor * 100),
       };
     }
-    const { red, green, blue } = this.fromHslToRgb();
+    const { red, green, blue } = this.fromHslToRgb({
+      hue,
+      saturation: 100,
+      lightness: 50,
+    });
 
     const calculatedRed: number =
       red * (1 - normalizedWhiteness - normalizedBlackness) +
@@ -254,14 +233,13 @@ export class ColorsConverterMethods {
     };
   }
 
-  fromRgbToHsv(): HueSaturationValue {
-    this.color = this.color as RedGreenBlue;
-    const { red, green, blue } = this.color;
+  fromRgbToHsv(color: RedGreenBlue): HueSaturationValue {
+    const { red, green, blue } = color;
 
     const min: number = Math.min(red, green, blue);
     const max: number = Math.max(red, green, blue);
 
-    const { hue } = this.fromRgbToHsl();
+    const { hue } = this.fromRgbToHsl(color);
 
     const normalizedSaturation: number = max !== 0 ? 1 - min / max : 0;
     const normalizedValue: number = max / 255;
@@ -273,9 +251,8 @@ export class ColorsConverterMethods {
     };
   }
 
-  fromHsvToRgb(): RedGreenBlue {
-    this.color = this.color as HueSaturationValue;
-    const { hue, saturation, value } = this.color;
+  fromHsvToRgb(color: HueSaturationValue): RedGreenBlue {
+    const { hue, saturation, value } = color;
 
     // Normalize saturation and value to the range of 0-1
     const normalizedSaturation = saturation / 100;
@@ -341,6 +318,8 @@ export class ColorConverter extends ColorsConverterMethods {
     | HueSaturationValue;
   currentModel: string;
 
+  private normalizedColor: RedGreenBlue;
+
   constructor(
     currentModel: string,
     color:
@@ -350,13 +329,79 @@ export class ColorConverter extends ColorsConverterMethods {
       | HueWhitenessBlackness
       | HueSaturationValue
   ) {
-    super(color);
+    super();
     this.color = color;
 
+    this.normalizedColor;
+
     this.currentModel = currentModel;
+
+    this.normalizeToRgb();
   }
 
-  normalizeToRgb() {}
+  normalizeToRgb() {
+    const isAlreadyRgb = this.currentModel === "rgb";
+    if (isAlreadyRgb) {
+      return;
+    }
 
-  convert(toModel) {}
+    switch (this.currentModel) {
+      case "hex": {
+        this.normalizedColor = this.fromHexToRgb(this.color as string);
+        break;
+      }
+      case "hsl": {
+        this.normalizedColor = this.fromHslToRgb(
+          this.color as HueSaturationLightness
+        );
+        break;
+      }
+      case "hwb": {
+        this.normalizedColor = this.fromHwbToRgb(
+          this.color as HueWhitenessBlackness
+        );
+        break;
+      }
+      case "hsv": {
+        this.normalizedColor = this.fromHsvToRgb(
+          this.color as HueSaturationValue
+        );
+        break;
+      }
+
+      default: {
+        break;
+      }
+    }
+  }
+
+  convertTo(toModel: string) {
+    switch (toModel) {
+      case "hex": {
+        return this.fromRgbToHex(this.normalizedColor);
+      }
+      case "hsl": {
+        return this.fromRgbToHsl(this.normalizedColor);
+      }
+      case "hwb": {
+        return this.fromRgbToHwb(this.normalizedColor);
+      }
+      case "hsv": {
+        return this.fromRgbToHsv(this.normalizedColor);
+      }
+
+      default: {
+        return this.normalizedColor;
+      }
+    }
+  }
+
+  getAllColorModels() {
+    return [
+      this.fromRgbToHex(this.normalizedColor),
+      this.fromRgbToHsl(this.normalizedColor),
+      this.fromRgbToHwb(this.normalizedColor),
+      this.fromRgbToHsv(this.normalizedColor),
+    ];
+  }
 }
