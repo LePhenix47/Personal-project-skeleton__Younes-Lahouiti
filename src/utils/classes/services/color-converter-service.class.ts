@@ -1,3 +1,4 @@
+import { log } from "../../functions/helper-functions/console.functions";
 import {
   decimalToHexadecimal,
   hexadecimalToDecimal,
@@ -163,9 +164,9 @@ export class ColorsConverterMethods {
     }
 
     return {
-      red: calculateComponent(0),
-      green: calculateComponent(8),
-      blue: calculateComponent(4),
+      red: Math.round(calculateComponent(0)),
+      green: Math.round(calculateComponent(8)),
+      blue: Math.round(calculateComponent(4)),
     };
   }
 
@@ -345,6 +346,12 @@ export class ColorConverter extends ColorsConverterMethods {
         this.normalizedColor = this.fromHexToRgb(this.color as string);
         break;
       }
+
+      case "rgb": {
+        this.normalizedColor = this.color as RedGreenBlue;
+        break;
+      }
+
       case "hsl": {
         this.normalizedColor = this.fromHslToRgb(
           this.color as HueSaturationLightness
@@ -368,12 +375,17 @@ export class ColorConverter extends ColorsConverterMethods {
         break;
       }
     }
+
+    log(this.normalizedColor);
   }
 
   convertTo(toModel: string) {
     switch (toModel) {
       case "hex": {
         return this.fromRgbToHex(this.normalizedColor);
+      }
+      case "rbg": {
+        return this.normalizedColor;
       }
       case "hsl": {
         return this.fromRgbToHsl(this.normalizedColor);
@@ -386,7 +398,7 @@ export class ColorConverter extends ColorsConverterMethods {
       }
 
       default: {
-        return this.normalizedColor;
+        break;
       }
     }
   }
