@@ -1,3 +1,4 @@
+import { warn } from "./console.functions";
 import { round } from "./math.functions";
 import { decimalToHexadecimal, hexadecimalToDecimal } from "./number.functions";
 import { getSubtring, sliceString } from "./string.functions";
@@ -373,8 +374,8 @@ export function hsvToHsl(
  * Transforms a color value from one color model to another.
  *
  * @param {any} colorValue - The color value to transform.
- * @param {string} initialColorModel - The initial color model of the color value, can be: `hex`, `rgb`,`hsl` or `hwb`
- * @param {string} wantedColorModel - The desired color model to convert the color value to, can be:  `hex`, `rgb` or `hsl`
+ * @param {string} initialColorModel - The initial color model of the color value, can be: `hex`, `rgb`,`hsl`, `hsv` or `hwb`
+ * @param {string} wantedColorModel - The desired color model to convert the color value to, can be:  `hex`, `rgb`,`hsl`, `hsv` or `hwb`
  *
  * @example
  * let pinkHex = "#FF00BA";
@@ -387,6 +388,12 @@ export function transformColorModel(
   initialColorModel: string,
   wantedColorModel: string
 ): any {
+  const haveSameColorModels: boolean = initialColorModel === wantedColorModel;
+  if (haveSameColorModels) {
+    warn("The function called has the same color model");
+    return colorValue;
+  }
+
   let convertedColor: any;
 
   initialColorModel = initialColorModel.toLowerCase();
@@ -418,6 +425,10 @@ export function transformColorModel(
     initialColorModel.includes("rgb") && wantedColorModel.includes("hex");
   const HEX_TO_HSL: boolean =
     initialColorModel.includes("hex") && wantedColorModel.includes("hsl");
+  const HWB_TO_RGB: boolean =
+    initialColorModel.includes("hwb") && wantedColorModel.includes("rgb");
+  const HWB_TO_HSL: boolean =
+    initialColorModel.includes("hwb") && wantedColorModel.includes("hsl");
 
   // Direct Conversions (available color conversion funcitons)
   if (HEX_TO_RGB) {
@@ -454,7 +465,7 @@ export function transformColorModel(
     );
   }
 
-  // Indirect Conversions (incomplete)
+  // Indirect Conversions (incomplete, add remaining conitions here)
   else if (HSL_TO_RGB) {
     const hexColor: string = hslColorToHex(
       colorValue.hue,
@@ -480,9 +491,41 @@ export function transformColorModel(
       blue: number;
     } = hexColorToRgb(colorValue);
     convertedColor = rgbColorToHsl(rgbColor.red, rgbColor.green, rgbColor.blue);
+  } else if (
+    //HWB to RGB
+    HWB_TO_RGB
+  ) {
+    const hsvColor: {
+      hue: number;
+      saturation: number;
+      value: number;
+    } = hwbToHsv(colorValue.hue, colorValue.whiteness, colorValue.blackness);
+    const hslColor: {
+      hue: number;
+      saturation: number;
+      lightness: number;
+    } = hsvToHsl(hsvColor.hue, hsvColor.saturation, hsvColor.value);
+    const hexColor: string = hslColorToHex(
+      hslColor.hue,
+      hslColor.saturation,
+      hslColor.lightness
+    );
+    convertedColor = hexColorToRgb(hexColor);
+  } else if (HWB_TO_HSL) {
+    //HWB to HSL
+    const hsvColor: {
+      hue: number;
+      saturation: number;
+      value: number;
+    } = hwbToHsv(colorValue.hue, colorValue.whiteness, colorValue.blackness);
+    convertedColor = hsvToHsl(
+      hsvColor.hue,
+      hsvColor.saturation,
+      hsvColor.value
+    );
   }
 
-  // Unsupported Conversion
+  // Unsupported Conversions: cym
   else {
     throw new Error(
       "Color model conversion error: Unsupported wanted color model"
