@@ -1,4 +1,4 @@
-import { warn } from "./console.functions";
+import { error, log, warn } from "./console.functions";
 import { round } from "./math.functions";
 import { decimalToHexadecimal, hexadecimalToDecimal } from "./number.functions";
 import { getSubtring, sliceString } from "./string.functions";
@@ -28,7 +28,9 @@ export function getColorBrightness(
     red < 0 || red > 255 || blue < 0 || blue > 255 || green < 0 || green > 255;
 
   if (hasInvalidRGBValues) {
-    throw "Unexpected error: One or multiple RGB values are overflowing or underflowing";
+    console.error(
+      "Unexpected error: One or multiple RGB values are overflowing or underflowing"
+    );
   }
 
   if (hasToBeExact) {
@@ -52,10 +54,14 @@ export function hexColorToRgb(hexadecimal: string): {
   green: number;
   blue: number;
 } {
+  console.log("HEX → RGB", { hexadecimal });
+
   const colorArgumentIsInvalid: boolean =
     hexadecimal?.length < 6 || hexadecimal?.length > 7;
   if (colorArgumentIsInvalid) {
-    throw `Error: Unexpected color argument length passed, was expecting a 6 or 7 characters long string but instead got ${hexadecimal.length}`;
+    console.error(
+      `Error: Unexpected color argument length passed, was expecting a 6 or 7 characters long string but instead got ${hexadecimal.length}`
+    );
   }
 
   let hexColor: string = hexadecimal;
@@ -84,6 +90,43 @@ export function hexColorToRgb(hexadecimal: string): {
 }
 
 /**
+ * Converts an RGB color value to HWB (Hue, Whiteness, Blackness) format.
+ *
+ * @param {number} red - The red component (0-255).
+ * @param {number} green - The green component (0-255).
+ * @param {number} blue - The blue component (0-255).
+ *
+ * @returns {{ hue: number; whiteness: number; blackness: number; }} The HWB color value.
+ */
+export function rgbColorToHwb(
+  red: number,
+  green: number,
+  blue: number
+): { hue: number; whiteness: number; blackness: number } {
+  log("RGB → HWB", { red, green, blue });
+
+  const normalizedRed: number = red / 255;
+  const normalizedGreen: number = green / 255;
+  const normalizedBlue: number = blue / 255;
+
+  const { hue } = rgbColorToHsl(red, green, blue);
+
+  const whiteness: number = Math.min(
+    normalizedRed,
+    normalizedGreen,
+    normalizedBlue
+  );
+  const blackness: number =
+    1 - Math.max(normalizedRed, normalizedGreen, normalizedBlue);
+
+  return {
+    hue,
+    whiteness: whiteness * 100,
+    blackness: blackness * 100,
+  };
+}
+
+/**
  * Converts an RGB (Red, Blue, Green) color value to HSL (Hue, Saturation, Lightness) format.
  *
  * @param {number} red - The red component of the RGB color (0-255).
@@ -101,6 +144,24 @@ export function rgbColorToHsl(
   saturation: number;
   lightness: number;
 } {
+  console.log("RGB → HSL", { red, green, blue });
+
+  const argumentsAreInvalid: boolean =
+    !Number.isInteger(red) ||
+    !Number.isInteger(green) ||
+    !Number.isInteger(blue) ||
+    red < 0 ||
+    red > 255 ||
+    green < 0 ||
+    green > 255 ||
+    blue < 0 ||
+    blue > 255;
+  if (argumentsAreInvalid) {
+    console.error(
+      `Invalid RGB color values. Expected integers between 0 and 255, but received: red=${red}, green=${green}, blue=${blue}`
+    );
+  }
+
   // Normalize RGB values
   const normalizedRed: number = red / 255;
   const normalizedGreen: number = green / 255;
@@ -174,17 +235,17 @@ export function hslColorToHex(
   saturation: number = 100,
   lightness: number = 50
 ): string {
+  console.log("HSL → HEX", { hue, saturation, lightness });
+  const hueIsInvalid: boolean = hue < 0 || hue > 360;
+  const saurationIsInvalid: boolean = saturation < 0 || saturation > 100;
+
+  const lightnessIsInvalid: boolean = lightness < 0 || lightness > 100;
   // Validate the HSL color values
   const hasInvalidHslArguments: boolean =
-    hue < 0 ||
-    hue > 360 ||
-    saturation < 0 ||
-    saturation > 100 ||
-    lightness < 0 ||
-    lightness > 100;
+    hueIsInvalid || saurationIsInvalid || lightnessIsInvalid;
   if (hasInvalidHslArguments) {
-    throw new Error(
-      "Invalid HSL color values. Hue should be between 0 and 360, saturation and lightness should be between 0 and 100."
+    console.error(
+      `Invalid HSL color values, hue: ${hue}, saturation: ${saturation} and ligtness: ${lightness}`
     );
   }
 
@@ -252,17 +313,18 @@ export function hslColorToHwb(
   whiteness: number;
   blackness: number;
 } {
-  const hasInvalidHslArguments: boolean =
-    hue < 0 ||
-    hue > 360 ||
-    saturation < 0 ||
-    saturation > 100 ||
-    lightness < 0 ||
-    lightness > 100;
+  console.log("HSL → HWB", { hue, saturation, lightness });
+
+  const hueIsInvalid: boolean = hue < 0 || hue > 360;
+  const saturationIsInvalid: boolean = saturation < 0 || saturation > 100;
+  const lightnessIsInvalid: boolean = lightness < 0 || lightness > 100;
+
   // Validate the HSL color values
+  const hasInvalidHslArguments: boolean =
+    hueIsInvalid || saturationIsInvalid || lightnessIsInvalid;
   if (hasInvalidHslArguments) {
-    throw new Error(
-      "Invalid HSL color values. Hue should be between 0 and 360, saturation and lightness should be between 0 and 100."
+    console.error(
+      `Invalid HSL color values, hue: ${hue}, saturation: ${saturation}, and lightness: ${lightness}`
     );
   }
 
@@ -285,7 +347,7 @@ export function hslColorToHwb(
   const scaledWhiteness: number = Math.round(whiteness * 100);
   const scaledBlackness: number = Math.round(blackness * 100);
 
-  // Return the HWB color value as a string
+  // Return the HWB color value as an object
   return {
     hue: scaledHue,
     whiteness: scaledWhiteness,
@@ -311,12 +373,32 @@ export function hwbToHsv(
   saturation: number;
   value: number;
 } {
-  const value: number = 1 - blackness;
-  const saturation: number = 1 - whiteness / value;
+  console.log("HWB → HSV", { hue, whiteness, blackness });
+  const argumentsAreInvalid =
+    !Number.isInteger(hue) ||
+    !Number.isInteger(whiteness) ||
+    !Number.isInteger(blackness) ||
+    hue < 0 ||
+    hue > 360 ||
+    whiteness < 0 ||
+    whiteness > 100 ||
+    blackness < 0 ||
+    blackness > 100;
+  if (argumentsAreInvalid) {
+    console.error(
+      `Invalid HWB color values. Expected integers for hue (0-360) and whiteness/blackness (0-100), but received: hue=${hue}, whiteness=${whiteness}, blackness=${blackness}`
+    );
+  }
+
+  const normalizedWhiteness: number = whiteness / 100;
+  const normalizedBlackness: number = blackness / 100;
+
+  const value: number = 1 - normalizedBlackness;
+  const saturation: number = 1 - normalizedWhiteness / value;
   return {
     hue,
-    saturation,
-    value,
+    saturation: Math.round(saturation * 100),
+    value: Math.round(value * 100),
   };
 }
 
@@ -332,6 +414,23 @@ export function hsvToHsl(
   saturation: number,
   value: number
 ): { hue: number; saturation: number; lightness: number } {
+  console.log("HSV → HSL", { hue, saturation, value });
+  const argumentsAreInvalid =
+    !Number.isInteger(hue) ||
+    !Number.isInteger(saturation) ||
+    !Number.isInteger(value) ||
+    hue < 0 ||
+    hue > 360 ||
+    saturation < 0 ||
+    saturation > 100 ||
+    value < 0 ||
+    value > 100;
+  if (argumentsAreInvalid) {
+    console.error(
+      `Invalid HSV color values. Expected integers for hue (0-360) and saturation/value (0-100), but received: hue=${hue}, saturation=${saturation}, value=${value}`
+    );
+  }
+
   //We normalize the value to get a range of numbers from 0 to 1
   const normalizedSaturation: number = saturation / 100;
   const normalizedValue: number = value / 100;
@@ -365,8 +464,8 @@ export function hsvToHsl(
 
   return {
     hue,
-    saturation: convertedSaturation,
-    lightness: convertedLightness * 100,
+    saturation: Math.round(convertedSaturation),
+    lightness: Math.round(convertedLightness * 100),
   };
 }
 
@@ -390,7 +489,7 @@ export function transformColorModel(
 ): any {
   const haveSameColorModels: boolean = initialColorModel === wantedColorModel;
   if (haveSameColorModels) {
-    warn("The function called has the same color model");
+    console.warn("The function called has the same color model");
     return colorValue;
   }
 
@@ -531,10 +630,39 @@ export function transformColorModel(
 
   // Unsupported Conversions: cym
   else {
-    throw new Error(
+    console.error(
       "Color model conversion error: Unsupported wanted color model"
     );
   }
 
   return convertedColor;
+}
+
+export function getAllColorModelsFromHex(hexadecimal: string) {
+  const rgb: {
+    red: number;
+    green: number;
+    blue: number;
+  } = hexColorToRgb(hexadecimal);
+
+  const hsl: {
+    hue: number;
+    saturation: number;
+    lightness: number;
+  } = rgbColorToHsl(rgb.red, rgb.green, rgb.blue);
+
+  const hwb: {
+    hue: number;
+    whiteness: number;
+    blackness: number;
+  } = rgbColorToHwb(rgb.red, rgb.green, rgb.blue);
+
+  const hsv: {
+    hue: number;
+    saturation: number;
+    value: number;
+  } = hwbToHsv(hwb.hue, hwb.whiteness, hwb.blackness);
+
+  log("From HEX: ", { hexadecimal }, "to");
+  return [rgb, hsl, hwb, hsv];
 }
