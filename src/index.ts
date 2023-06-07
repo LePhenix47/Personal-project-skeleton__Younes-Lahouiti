@@ -22,19 +22,17 @@ import {
 //   lightness: 35,
 // });
 
-// const colorConverter = new ColorConverter("hwb", {
-//   hue: 200,
-//   whiteness: 25,
-//   blackness: 55,
-// });
-
-const colorConverter = new ColorConverter("hsv", {
+const colorConverter = new ColorConverter("hwb", {
   hue: 200,
-  saturation: 44,
-  value: 45,
+  whiteness: 25,
+  blackness: 55,
 });
 
+// const colorConverter = new ColorConverter("hsv", {
+//   hue: 200,
+//   saturation: 44,
+//   value: 45,
+// });
+
 log("Color to convert:", colorConverter.color);
-log(colorConverter.convertTo("rgb"));
-log(colorConverter.convertTo("hsl"));
-log(colorConverter.convertTo("hex"));
+log(colorConverter.getAllColorModels());
