@@ -8,18 +8,33 @@ import {
   stringifyToJSON,
 } from "./utils/functions/helper-functions/string.functions";
 
-log("Hello world!");
+// const colorConverter = new ColorConverter("hex", "#406273");
 
-// log(getAllColorModelsFromHex("#33374a"));
+// const colorConverter = new ColorConverter("rgb", {
+//   red: 64,
+//   green: 98,
+//   blue: 115,
+// });
 
-const colorConverter = new ColorConverter("hsl", {
+// const colorConverter = new ColorConverter("hsl", {
+//   hue: 200,
+//   saturation: 28,
+//   lightness: 35,
+// });
+
+// const colorConverter = new ColorConverter("hwb", {
+//   hue: 200,
+//   whiteness: 25,
+//   blackness: 55,
+// });
+
+const colorConverter = new ColorConverter("hsv", {
   hue: 200,
-  saturation: 28,
-  lightness: 35,
+  saturation: 44,
+  value: 45,
 });
 
-const currentColor = stringifyToJSON(colorConverter.color);
-
-log("%c" + currentColor, "color:#8974c6");
-log(colorConverter.convertTo("hwb"));
-log(colorConverter.convertTo("hsv"));
+log("Color to convert:", colorConverter.color);
+log(colorConverter.convertTo("rgb"));
+log(colorConverter.convertTo("hsl"));
+log(colorConverter.convertTo("hex"));

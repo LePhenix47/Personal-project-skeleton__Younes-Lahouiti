@@ -14,7 +14,15 @@ import {
   RedGreenBlue,
 } from "../../variables/color-types.variables";
 
-export class ColorsConverterMethods {
+/**
+ * Abstract class containing conversion methods for various color models.
+ */
+class AbstractConversionMethods {
+  /**
+   * Converts RGB color to hexadecimal format.
+   * @param {RedGreenBlue} color - The RGB color object.
+   * @returns {string} The color in hexadecimal format.
+   */
   fromRgbToHex(color: RedGreenBlue): string {
     const { red, green, blue } = color;
 
@@ -25,6 +33,11 @@ export class ColorsConverterMethods {
     return `#${hexadecimalRed}${hexadecimalGreen}${hexadecimalBlue};`;
   }
 
+  /**
+   * Converts a color in hexadecimal format to RGB.
+   * @param {string} color - The color in hexadecimal format.
+   * @returns {RedGreenBlue} The RGB color object.
+   */
   fromHexToRgb(color: string): RedGreenBlue {
     const colorArgumentIsInvalid: boolean =
       color?.length < 6 || color?.length > 7;
@@ -59,6 +72,11 @@ export class ColorsConverterMethods {
     return { red: redBase10, green: greenBase10, blue: blueBase10 };
   }
 
+  /**
+   * Converts RGB color to HSL (Hue, Saturation, Lightness).
+   * @param {RedGreenBlue} color - The RGB color object.
+   * @returns {HueSaturationLightness} The HSL color object.
+   */
   fromRgbToHsl(color: RedGreenBlue): HueSaturationLightness {
     const { red, green, blue } = color;
 
@@ -145,6 +163,11 @@ export class ColorsConverterMethods {
     };
   }
 
+  /**
+   * Converts HSL (Hue, Saturation, Lightness) color to RGB.
+   * @param {HueSaturationLightness} color - The HSL color object.
+   * @returns {RedGreenBlue} The RGB color object.
+   */
   fromHslToRgb(color: HueSaturationLightness): RedGreenBlue {
     const { hue, saturation, lightness } = color;
 
@@ -152,24 +175,30 @@ export class ColorsConverterMethods {
     const normalizedLightness: number = lightness / 100;
 
     function calculateComponent(colorValue: number): number {
+      // log({ normalizedSaturation, normalizedLightness });
       const colorComponent: number = (colorValue + hue / 30) % 12;
       const chroma: number =
         normalizedSaturation *
         Math.min(normalizedLightness, 1 - normalizedLightness);
       return (
-        lightness -
+        normalizedLightness -
         chroma *
           Math.max(-1, Math.min(colorComponent - 3, 9 - colorComponent, 1))
       );
     }
 
     return {
-      red: Math.round(calculateComponent(0)),
-      green: Math.round(calculateComponent(8)),
-      blue: Math.round(calculateComponent(4)),
+      red: Math.round(calculateComponent(0) * 255),
+      green: Math.round(calculateComponent(8) * 255),
+      blue: Math.round(calculateComponent(4) * 255),
     };
   }
 
+  /**
+   * Converts RGB color to HWB (Hue, Whiteness, Blackness).
+   * @param {RedGreenBlue} color - The RGB color object.
+   * @returns {HueWhitenessBlackness} The HWB color object.
+   */
   fromRgbToHwb(color: RedGreenBlue): HueWhitenessBlackness {
     const { red, green, blue } = color;
 
@@ -194,6 +223,11 @@ export class ColorsConverterMethods {
     };
   }
 
+  /**
+   * Converts HWB (Hue, Whiteness, Blackness) color to RGB.
+   * @param {HueWhitenessBlackness} color - The HWB color object.
+   * @returns {RedGreenBlue} The RGB color object.
+   */
   fromHwbToRgb(color: HueWhitenessBlackness): RedGreenBlue {
     const { hue, whiteness, blackness } = color;
 
@@ -217,23 +251,32 @@ export class ColorsConverterMethods {
       lightness: 50,
     });
 
+    const normalizedRed = red / 255;
+    const normalizedGreen = green / 255;
+    const normalizedBlue = blue / 255;
+
     const calculatedRed: number =
-      red * (1 - normalizedWhiteness - normalizedBlackness) +
+      normalizedRed * (1 - normalizedWhiteness - normalizedBlackness) +
       normalizedWhiteness;
     const calculatedGreen: number =
-      green * (1 - normalizedWhiteness - normalizedBlackness) +
+      normalizedGreen * (1 - normalizedWhiteness - normalizedBlackness) +
       normalizedWhiteness;
     const calculatedBlue: number =
-      blue * (1 - normalizedWhiteness - normalizedBlackness) +
+      normalizedBlue * (1 - normalizedWhiteness - normalizedBlackness) +
       normalizedWhiteness;
 
     return {
-      red: Math.round(calculatedRed * 100),
-      green: Math.round(calculatedGreen * 100),
-      blue: Math.round(calculatedBlue * 100),
+      red: Math.round(calculatedRed * 255),
+      green: Math.round(calculatedGreen * 255),
+      blue: Math.round(calculatedBlue * 255),
     };
   }
 
+  /**
+   * Converts RGB color to HSV (Hue, Saturation, Value).
+   * @param {RedGreenBlue} color - The RGB color object.
+   * @returns {HueSaturationValue} The HSV color object.
+   */
   fromRgbToHsv(color: RedGreenBlue): HueSaturationValue {
     const { red, green, blue } = color;
 
@@ -252,6 +295,11 @@ export class ColorsConverterMethods {
     };
   }
 
+  /**
+   * Converts HSV (Hue, Saturation, Value) color to RGB.
+   * @param {HueSaturationValue} color - The HSV color object.
+   * @returns {RedGreenBlue} The RGB color object.
+   */
   fromHsvToRgb(color: HueSaturationValue): RedGreenBlue {
     const { hue, saturation, value } = color;
 
@@ -303,14 +351,17 @@ export class ColorsConverterMethods {
 
     // Return the resulting RGB values in the range of 0-255
     return {
-      red: Math.round(normalizedRed * 100),
-      green: Math.round(normalizedGreen * 100),
-      blue: Math.round(normalizedBlue * 100),
+      red: Math.round(normalizedRed * 255),
+      green: Math.round(normalizedGreen * 255),
+      blue: Math.round(normalizedBlue * 255),
     };
   }
 }
 
-export class ColorConverter extends ColorsConverterMethods {
+/**
+ * ColorConverter class that extends AbstractConversionMethods.
+ */
+export class ColorConverter extends AbstractConversionMethods {
   color:
     | string
     | RedGreenBlue
@@ -321,6 +372,11 @@ export class ColorConverter extends ColorsConverterMethods {
 
   private normalizedColor: RedGreenBlue;
 
+  /**
+   * Constructs a ColorConverter object.
+   * @param {string} currentModel - The current color model.
+   * @param {string|RedGreenBlue|HueSaturationLightness|HueWhitenessBlackness|HueSaturationValue} color - The color value.
+   */
   constructor(
     currentModel: string,
     color:
@@ -340,7 +396,11 @@ export class ColorConverter extends ColorsConverterMethods {
     this.normalizeToRgb();
   }
 
-  normalizeToRgb() {
+  /**
+   * Normalizes the color to RGB format to be later convert back into another one
+   * @returns {RedGreenBlue} The normalized RGB color value.
+   */
+  normalizeToRgb(): RedGreenBlue | void {
     switch (this.currentModel) {
       case "hex": {
         this.normalizedColor = this.fromHexToRgb(this.color as string);
@@ -372,19 +432,29 @@ export class ColorConverter extends ColorsConverterMethods {
       }
 
       default: {
-        break;
+        throw new Error("Invalid color model.");
       }
     }
-
-    log(this.normalizedColor);
   }
 
-  convertTo(toModel: string) {
-    switch (toModel) {
+  /**
+   * Converts the color to the specified color model.
+   * @param {string} targetModel - The target color model.
+   * @returns {string|RedGreenBlue|HueSaturationLightness|HueWhitenessBlackness|HueSaturationValue} The converted color value.
+   */
+  convertTo(
+    targetModel: string
+  ):
+    | string
+    | RedGreenBlue
+    | HueSaturationLightness
+    | HueWhitenessBlackness
+    | HueSaturationValue {
+    switch (targetModel) {
       case "hex": {
         return this.fromRgbToHex(this.normalizedColor);
       }
-      case "rbg": {
+      case "rgb": {
         return this.normalizedColor;
       }
       case "hsl": {
@@ -398,14 +468,25 @@ export class ColorConverter extends ColorsConverterMethods {
       }
 
       default: {
-        break;
+        throw new Error("Invalid color model.");
       }
     }
   }
 
-  getAllColorModels() {
+  /**
+   * Retrieves all color models for the current color.
+   * @returns {Array} An array containing the color values in different color models.
+   */
+  getAllColorModels(): (
+    | string
+    | RedGreenBlue
+    | HueSaturationLightness
+    | HueWhitenessBlackness
+    | HueSaturationValue
+  )[] {
     return [
       this.fromRgbToHex(this.normalizedColor),
+      this.normalizedColor,
       this.fromRgbToHsl(this.normalizedColor),
       this.fromRgbToHwb(this.normalizedColor),
       this.fromRgbToHsv(this.normalizedColor),
