@@ -1,4 +1,3 @@
-import { log } from "./console.functions";
 
 /**
  * Plays the audio element

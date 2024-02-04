@@ -1,6 +1,5 @@
 //Utils
 
-import { log } from "./console.functions";
 /**
  *Function that formats a given string in 3 cases: lowercase, uppercase and titlecase
  *
@@ -75,7 +74,7 @@ export function formatText(string: string, option: string): string | never {
 export function normalize(string: string): string | null {
   const argumentIsNotAString: boolean = typeof string !== "string";
   if (argumentIsNotAString) {
-    log("Value passed in argument is not a string !");
+    console.log("Value passed in argument is not a string !");
     return null;
   }
   return string

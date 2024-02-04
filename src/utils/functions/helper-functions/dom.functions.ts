@@ -1,4 +1,3 @@
-import { log, table } from "./console.functions";
 
 /**
  * Simpler version of `document.getElementsByClassName()`

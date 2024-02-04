@@ -1,30 +1,32 @@
 :root {
-    --bg-primary: rgb(255, 255, 255);
-    --bg-secondary: #f0efef;
-    --bg-tertiary: #676767;
+    --bg-primary: #FAFAFA;
+    --bg-secondary: white;
 
+    --color-primary: #323232;
+    --color-primary--hover: #3c3c3c;
+    --color-primary--active: #474747;
+    --color-secondary: #757575;
 
-    --test: #406273;
-    --test: rgb(64, 98, 115);
-    --test: hsl(200, 28%, 35%);
-    --test: hwb(200, 25%, 55%);
+    --semi-transparent-bg: rgba(255, 255, 255, 70%);
 
-    --semi-transparent-bg: rgba(255, 255, 255, 50%);
-
-    --color-primary: black;
-    --color-secondary: gray;
+    --border-color: #DBDBDB;
 
     --scrollbar-track-bg-color: white;
-
-    --disabled-button-bg: #afafaf;
 
     --scrollbar-thumb-bg-color: #545454;
     --scrollbar-thumb-bg-color--hover: #757575;
     --scrollbar-thumb-bg-color--active: #b0b0b0;
 
-    --selection-bg-color: hwb(240 0% 0%);
-    --selection-color: white;
+    /* Pixel variables */
+    --timeline-space: 100px;
+
 }
+
+// @property --test {
+//     syntax: "<percentage>";
+//     inherits: false;
+//     initial-value: 80%;
+// }
 
 ::backdrop {
     --backdrop-bg-color: rgba(255, 255, 255, 0.5);

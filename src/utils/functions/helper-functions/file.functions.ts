@@ -64,3 +64,13 @@ export function fileToBase64String(fileToConvert: File): Promise<string> {
 export function fileToBlobUrl(fileToConvert: File): string {
   return URL.createObjectURL(fileToConvert);
 }
+
+/**
+ * Invalidates a Blob URL by revoking the object URL, freeing cache memory
+ *
+ * @param {string} videoSource - The Blob URL to be invalidated.
+ * @returns {void}
+ */
+export function invalidateBlobUrl(videoSource: string): void {
+  URL.revokeObjectURL(videoSource);
+}

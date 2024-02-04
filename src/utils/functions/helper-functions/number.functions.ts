@@ -1,4 +1,3 @@
-import { error, warn } from "./console.functions";
 import { abs, floor, random } from "./math.functions";
 
 /**

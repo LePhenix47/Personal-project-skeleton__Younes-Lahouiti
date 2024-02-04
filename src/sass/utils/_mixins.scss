@@ -1,4 +1,14 @@
 //Media queries
+/*
+ * These properties will be available in the future
+
+ @custom-media --mobile-viewport (width <=768px);
+ @custom-media --tablet-viewport (768px <=width <=992px);
+ @custom-media --laptop-viewport (992px <=width <=1150px);
+ @custom-media --desktop-viewport (width <=768px);
+*/
+
+
 @mixin mobile-only {
     @media screen and (width <=768px) {
         @content;
@@ -9,8 +19,6 @@
     @media screen and (768px <=width <=992px) {
         @content;
     }
-
-    ;
 }
 
 @mixin laptop-only {
@@ -27,13 +35,6 @@
 
 @mixin desktop-only {
     @media screen and (width>=1475px) {
-        @content;
-    }
-}
-
-
-@mixin mobile-landscape-only {
-    @media screen and (width <=768px) and (orientation: landscape) {
         @content;
     }
 }
@@ -65,15 +66,14 @@
     gap: $gap;
 }
 
-@mixin grid-positioning($justify-items: center, $align-content: center) {
-    justify-items: $justify-items;
-    align-content: $align-content;
-}
-
-
-@mixin grid-auto($rows: auto, $columns: auto) {
-    grid-auto-rows: $rows;
-    grid-auto-columns: $columns;
+//Grid mixins
+@mixin grid-auto($rows: auto-fill, $columns: auto-fill, $gap: 0px) {
+    display: grid;
+    grid-template-rows: repeat($rows, 1fr);
+    grid-template-columns: repeat($columns, 1fr);
+    grid-auto-rows: repeat($rows, 1fr);
+    grid-auto-columns: repeat($columns, 1fr);
+    gap: $gap;
 }
 
 //Mixin to center in the middle
@@ -85,7 +85,9 @@
 
 //Mixin to make the image fit
 @mixin fit-image {
+    -o-object-fit: cover;
     object-fit: cover;
+    -o-object-position: center;
     object-position: center;
 }
 
@@ -97,18 +99,74 @@
 }
 
 //Mixin to get the text ellipsis effect after a few lines
-@mixin multiline-ellipsis-effect($columns: 2) {
-    //As of 2023 the line-clamp property still hasn't been standardized yet
+@mixin multiline-ellipsis-effect($columns: 1) {
     display: -webkit-box;
     -webkit-line-clamp: $columns;
     -webkit-box-orient: vertical;
-
-    line-clamp: $columns;
-
     overflow: hidden;
 }
 
-// Mixin for setting child element border radius with a single padding gap
-@mixin child-border-radius-simple($parent-radius, $child-gap) {
-    border-radius: calc(#{$parent-radius} - #{$child-gap});
+//Mixin for the styling of a button
+@mixin link-btn-styling {
+    @include center-flex(15px);
+
+    width: 240px;
+
+    font-weight: 500;
+    font-size: 22px;
+
+    padding: 20px 25px;
+    margin-bottom: 10px;
+
+    border-radius: 15px;
+
+    background-color: var(--color-primary);
+    color: var(--bg-secondary);
+
+    transition:
+        background-color 150ms ease-in-out,
+        color 150ms ease-in-out;
+
+    &:hover {
+        background-color: var(--color-primary--hover);
+    }
+
+    &:active {
+        background-color: var(--color-primary--active);
+    }
+
+    &:visited {
+        color: var(--bg-secondary);
+    }
+
+    @include mobile-only {
+        font-size: 18px;
+
+        text-align: center;
+
+        padding: 10px 15px;
+    }
+}
+
+//Mixin for the styling of an input
+@mixin inputs-styling {
+    background-color: transparent;
+
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+
+    &:focus {
+        border: 2px solid var(--scrollbar-thumb-bg-color);
+    }
+
+    padding: 10px 15px;
+
+    transition: border 250ms ease-in-out;
+}
+
+@mixin card-styling {
+    border: 2px solid var(--border-color);
+    border-radius: 10px;
+
+    background-color: var(--semi-transparent-bg);
 }
